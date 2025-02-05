@@ -1,0 +1,133 @@
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------
+We need to hit this api endpoint "https://fcm.googleapis.com/v1/projects/{{Project_Id}}/messages:send" with following payload to push notification
+{
+  "message": {
+    "notification": {
+	  "title": "Notification Title",
+      "body": "You have new appointment with Gwen Doe on Saturday, October 20 2024 between 11:15 AM - 3:00 PM."
+    },
+    "data": {
+      "keysandvalues": "{\"AppointmentId\": 7**5, \"ProviderID\": 0, \"PatientID\": 3**8, \"ImageThumbnail\": \"\", \"Name\": \"\", \"Address\": \"\", \"StartDate\": \"\", \"EndDate\": \"\", \"StatusName\": \"\"}",
+      "notificationType": "CreateAppointment",
+      "notificationCount": "5"
+    },
+    "token": "*******************mMyl2iVja3N4ZY**********_q**************sGBvId5p0EBhA_q0fGv**********a_brBDrvNMQ"
+  }
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------
+Generate Credentials json file from firebase
+
+{
+  "type": "service_account",
+  "project_id": "pa**-********-1****",
+  "private_key_id": "*****************",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nM***********w3J0\n7YwyOH9ftR*********3+rU0rae************CcPRd\nD8l82Is****2K+0xE**d7j2/RE8V****0MEND/G8MVptu****M1\n4Y+Do***7lO0x6sTDR6***Q/P9x***Wpvj+F+ykeFzpNz99xXDKXCbt\nn/hrG0HmZg4hred5O/v3SNNaiEAMxZpEUn+Ps0djoNVKHHwfPvu4Gl3v950huDuF\ngBGJyxTCGc+FOwDQb0e6YYI6ktxv/Uv65uWHRjmCPnunzNEayBwq++bitao3KQtB\nc7ivC5x1AgMBAAECggEADHEOiX8Ps6CFQq5Z/GYVCdYsP/ScySs9ICWq5mnKu7Zt\nA6PlHvwv2ki+0WW+OVVJVgiisW1TXhTyfE/Xf7bhGPKNXUxl19wSfsNQ3EZA8J3J\ninG9RXcQk44L8XszoUT5qz7nkMrUlumu1CdOzHMZEV7Whjnu8cepVN3qYz0JFCRx\nRAzrKy1i5g5T86aGDkBSzBbYiWqCLkbenPW4dIUPMazSvkT+u/L3pwB3***46lRQ\nfdhZvhTE****9HmEihFTZi036AwsCdJkG+cdTezkNj4lsUZ7tpWHJEF0giKBIZ\nOhxeEmzLeD6EIwWuVOn+CQdgonB2Fi2RaQ3iMe8i0QKBgQDfa+Zi***14zoZNM\nkeetxPyC9EHTA****Is60jpGmZ*****afxtiETvkO6r5Fjjcz3q93pIX\n4h/dViOkYJss5hvWDQZk2KNSqVTn6xmggGR09E0eaZLbqaoHJzAg89RdOi6STPRk\neJMVw2EY9Q7BNfEBxzTRLEWq8QKBgQC3dCTnzuHNUtHJjBj***yMLPcH9/\nC6lPeip***FACj+DZ7WluLw****V3ghlBTp+3l1L/sO+CFzRHIaxVgtkLUl\nP21PqwtmgKmNPxKSZrJvwPwFVg85gQGOe8qQaJ+fLelDBIUjbT8eaAlPM1Se9CQ9\nX2NZLMYhxQKBgBEuixkml2vecbAmzN0mm1qRu5mWjzlbGw0YUtKBhannjdWUA0pJ\nUjGtMMBw5fo0uRZk****nfNj9NN***vdz2UPiy+ZEMj2FSB****r3\nRMJ5xzR/ifu6oIjMSrc+CSbiQpK***********y9V+GdnJcj4NGlFUBAoGBAK94\nYvhqVGZMyiZ*****w2AHl/Z**1b********+cGVM2JP9jT***TT***********\nLd2IQzzOc****sn0O7sz+s1**ED0/STB8A**********cSg3S0WbMO5\nOj*********X/54/i40oK*******YaxmOaOJ***1AoGACs8i***fYss7fGML1s2E\nB8SDopX6**5vAHAmQK8OH/7ZsrsqrKJEWaC3ifQbJe/7PPxbEH5+y**N+2Bb**I\nIvB7hz+5tYeoa***2x4lwZ***SZ8x3n8/obPol**+F3**0K/mKR****AJiDLl6\nQk3+Jjw******rwhKU=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@pa**-********-1****.iam.gserviceaccount.com",
+  "client_id": "105184568259640731623",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40pa**-********-1****.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+public static class FcmConfigs
+{
+    public static string PushNotification_APIEndPoint = "https://fcm.googleapis.com/v1/projects/{{Project_Id}}/messages:send";
+    public static string ServiceAccountJsonFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "{{FolderName_Inside_wwwroot}}", "{{Project_Id}}-firebase-adminsdk-fbsvc-8defe8d722.json");
+    public static string[] Scopes = { "https://www.googleapis.com/auth/firebase.messaging" };
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------
+// This model is paasing in the SendPushNotificationForMobile method to push notification
+
+PushMobileNotificationModel pushNotificationModel = new()
+{
+    FCM_Token = deviceId, // DeviceId == FCM_Token, DeviceId Automatically generates when app opens, we are storing fcm token in tht db for while login and resend otp
+    Title = attendeesNotification.NotificationSubject,
+    Message = createNotificationModel.Content,
+    Data = new
+    {
+        ContactId = attendeesNotification.ContactID,
+        HtmlEmailTemplate = attendeesNotification.NotificationContent
+    },
+};
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Code to push Notification
+
+public static async Task<bool> SendPushNotificationForMobile(PushMobileNotificationModel notificationDetails)
+{
+    if (notificationDetails.FCM_Token == null)
+        return false;
+
+    try
+    {
+        // Read and parse service account credentials
+        string json = await File.ReadAllTextAsync(FcmConfigs.ServiceAccountJsonFilePath);
+        GoogleCredential gcredential = GoogleCredential
+            .FromJson(json)
+            .CreateScoped(FcmConfigs.Scopes);
+
+        // Generate access token
+        var accessToken = await gcredential.UnderlyingCredential.GetAccessTokenForRequestAsync();
+
+        string jsonDataString = notificationDetails.Data != null ? JsonConvert.SerializeObject(notificationDetails.Data) : "";
+
+        // Create HttpClient
+        using (var httpClient = new HttpClient())
+        {
+            httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", accessToken);
+            httpClient.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+
+            // Prepare payload
+            var payload = new
+            {
+                message = new
+                {
+                    token = notificationDetails.FCM_Token,
+                    notification = new
+                    {
+                        title = notificationDetails.Title, 
+                        body = notificationDetails.Message,
+                    },
+
+                    data = new
+                    {
+                        keySendValues = jsonDataString
+                    },
+                }
+            };
+
+            string postbody = JsonConvert.SerializeObject(payload);
+
+            // Send POST request
+            var content = new StringContent(postbody, Encoding.UTF8, "application/json");
+            var response = await httpClient.PostAsync(FcmConfigs.PushNotification_APIEndPoint, content);
+
+            // Check the response status
+            if (response.IsSuccessStatusCode)
+            {
+                return true; // Notification sent successfully
+            }
+            else
+            {
+                // Log the error response for debugging
+                string errorResponse = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error response: {errorResponse}");
+                
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        // Log generic exceptions
+        Console.WriteLine($"An error occurred: {ex.Message}");
+    }
+
+    return false; // Return false in case of failure
+}
